@@ -30,23 +30,12 @@ for i=1:size(primaries, 1)
         ys(j, i) = aux0(2) ;
         Xs(j, i) = aux1(1) ;
         Zs(j, i) = aux1(3) ;
-        SPECTRA((i-1)*size(primaries, 2) + j,:) = primaries(i, j).radiance.value;
+        SPECTRA((i-1)*size(primaries, 2) + j,:) = ...
+            primaries(i, j).radiance.value;
     end
     plot(xs(:, i), ys(:, i), [cols{i}, 'o'], 'MarkerSize', 12, ...
-        'MarkerEdgeColor', 'k', 'MarkerFaceColor', cols{i}, 'LineWidth', .3); %
-
-    lab_aux = xyz2lab([Xs(:, i) Ys(:, i) Zs(:, i)], 'whitepoint', ...
-    white.color.XYZ');
-
-    rgb_aux = xyz2rgb([Xs(:, i) Ys(:, i) Zs(:, i)], 'ColorSpace','linear-rgb',...
-        'WhitePoint',white.color.XYZ');
-    lch_primaries{i} = lab2lch(lab_aux')';
-
-    rgb_aux(rgb_aux > 1) = 1;
-    rgb_aux(rgb_aux < 0) = 0;
-    rgb_primaries{i} = double(rgb_aux);
-    hsv_primaries{i} = rgb2hsv(double(rgb_aux));
-
+        'MarkerEdgeColor', 'k', 'MarkerFaceColor', cols{i}, ...
+        'LineWidth', .3);
 end
 
 yticks([0 0.2 0.4 0.6 0.8])

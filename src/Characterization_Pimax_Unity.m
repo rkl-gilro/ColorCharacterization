@@ -101,8 +101,8 @@ for i=1:size(Xs, 1)
         (Zs(i, 1) + Zs(i, 2) + Zs(i, 3))')./(Zs(i, 4)'));
 end
 disp('Additivity: ')
-sum(abs(additiviy_diff(~any( isnan( additiviy_diff ) | ...
-    isinf( additiviy_diff ), 2 ), :)))
+disp(num2str(sum(abs(additiviy_diff(~any( isnan( additiviy_diff ) | ...
+    isinf( additiviy_diff ), 2 ), :)))))
 
 additiviy_difff= 100*((Xs(end, 4) - ...
     (Xs(end, 1) + Xs(end, 2) + Xs(end, 3)))/Xs(end, 4));
