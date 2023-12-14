@@ -1,18 +1,20 @@
 clear
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Calibration new data setup Unity Unlit
+%% Calibration new data setup Unity Standard
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-load('Calibration_UnityUnlit_CS2000_HTCVive_14_03_2023.mat');
-save_filename = 'Calibration_UnityStandard_CS2000_HTCVive_14_03_2023_dE.mat';
+
+load('Calibration_UnityUnlit_CS2000_Varjo_23_03_2023.mat');
+save_filename = 'Calibration_UnityUnlit_CS2000_Varjo_23_03_2023_LUT_dE.mat';
 
 primaries(1, :) = [Red];
 primaries(2, :) = [Green];
 primaries(3, :) = [Blue];
 primaries(4, :) = [Gray];
 
-white = [White];
+white = [White]; 
+
 
 figure
 plotChromaticity();hold on
@@ -33,14 +35,16 @@ for i=1:size(primaries, 1)
     plot(xs(:, i), ys(:, i), [cols{i}, 'o'], 'MarkerSize', 12, ...
         'MarkerEdgeColor', 'k', 'MarkerFaceColor', cols{i}, ...
         'LineWidth', .3);
+    
 end
 
 yticks([0 0.2 0.4 0.6 0.8])
 xticks([0 0.2 0.4 0.6 0.8])
 
-set(gca,  'FontSize', 20, 'fontname','Times New Roman');
+set(gca,  'FontSize', 20, 'fontname','Times New Roman', 'Color', [1. 1. 1.]); %
 grid on
 set(gcf,'renderer','Painters');
+
 
 
 figure
@@ -52,7 +56,7 @@ for i=1:size(primaries, 1)
         plot(380:780,primaries(i, j).radiance.value, cols{i}); hold on
         
     end
-    set(gca,  'FontSize', 24, 'fontname','TeXGyreTermes');
+    set(gca,  'FontSize', 24, 'fontname','TeXGyreTermes', 'Color', [1. 1. 1.]); %
     grid on
     set(gcf,'renderer','Painters');
 end
@@ -60,18 +64,15 @@ end
 
 figure
 plot(380:780,primaries(1, end).radiance.value ./ ...
-    max(primaries(1, end).radiance.value), [cols{1}, '-.'],...
-    'LineWidth',2); hold on
+    max(primaries(1, end).radiance.value), [cols{1}, '-.'],'LineWidth',2); hold on
 plot(380:780,primaries(2, end).radiance.value ./ ...
-    max(primaries(2, end).radiance.value), [cols{2}, '-'],...
-    'LineWidth',2); hold on
+    max(primaries(2, end).radiance.value), [cols{2}, '-'],'LineWidth',2); hold on
 plot(380:780,primaries(3, end).radiance.value ./ ...
-    max(primaries(3, end).radiance.value), [cols{3}, '--'],...
-    'LineWidth',2); hold on
-set(gca,  'FontSize', 15, 'fontname','Times New Roman');
+    max(primaries(3, end).radiance.value), [cols{3}, '--'],'LineWidth',2); hold on
+set(gca,  'FontSize', 15, 'fontname','Times New Roman', 'Color', [1. 1. 1.]); %
 set(gcf,'renderer','Painters');
-legend('Red primary','Green primary','Blue primary', ...
-    'Interpreter','latex','Location','northeast','FontSize',12);
+legend('Red primary','Green primary','Blue primary', 'Interpreter','latex', ...
+    'Location','northeast','FontSize',12);
 legend('boxoff')
 xlabel('Wavelength (nm)', 'Interpreter','latex');
 ylabel('Normalized power', 'Interpreter','latex');
@@ -87,12 +88,13 @@ for i=1:size(Xs, 1)
         (Zs(i, 1) + Zs(i, 2) + Zs(i, 3))')./(Zs(i, 4)'));
 end
 disp('Additivity: ')
-disp(num2str(sum(abs(additiviy_diff(~any( isnan( additiviy_diff ) | ...
-    isinf( additiviy_diff ), 2 ), :)))))
+sum(abs(additiviy_diff(~any( isnan( additiviy_diff ) | ...
+    isinf( additiviy_diff ), 2 ), :)))
 
 additiviy_difff= 100*((Xs(end, 4) - ...
     (Xs(end, 1) + Xs(end, 2) + Xs(end, 3)))/Xs(end, 4));
 disp(['Additiviy (only white)', num2str(additiviy_difff)])
+
 
 %% Estimated gamma curves for each channel
 for ch=1:3
@@ -102,14 +104,14 @@ end
 x = (0:5:255)./255;
 N = length(x);
 
-radiometric = [Xs(:, 4) Ys(:, 4) Zs(:, 4)]* inv(monXYZ);
+radiometric = ([Xs(:, 4) Ys(:, 4) Zs(:, 4)])* inv(monXYZ);
 
 cols={'r','g','b','k'};
 figure;
 for ch=1:3
     subplot(1,3,ch)
     plot(x, radiometric(:, ch), [cols{ch} 'o']);hold on
-    axis square
+    plot(radiometric(:, ch), x, [cols{ch} 'x']);hold on
 end
 
 %% Perform the validation using the calibration matrix and gamma values
@@ -123,16 +125,15 @@ for i=1:length(aux)
 end
 
 for ch = 1:3
-    RGBStestLinear(:, ch) = interp1(x, radiometric(:, ch), ...
-        RGBStest(:, ch));
+    RGBStestLinear(:, ch) = interp1(x, radiometric(:, ch), RGBStest(:, ch));
     RGBSwhite(:, ch) = interp1(x, radiometric(:, ch), 1);
 end
-
 
 XYZ = RGBStestLinear * monXYZ;
 XYZwhite = RGBSwhite * monXYZ;
 
 xyY = XYZToxyY(XYZ')';
+
 xyYmeas = XYZToxyY(XYZmeas')';
 
 %% Plot the results
@@ -143,15 +144,16 @@ set(gca,'FontSize',15,'LineWidth',2)
 box off
 xlabel('x','FontSize',15)
 ylabel('y','FontSize',15)
-set(gca,  'FontSize', 30, 'fontname','TeXGyreTermes');
+set(gca,  'FontSize', 30, 'fontname','TeXGyreTermes', 'Color', [1. 1. 1.]); %
 grid on
 set(gcf,'renderer','Painters');
 
 %% Compute deltae2000
 lab_meas = xyz2lab(XYZmeas, 'whitepoint', white.color.XYZ'); 
-lab_est  = xyz2lab(XYZ,     'whitepoint', XYZwhite); 
+lab_est  = xyz2lab(XYZ,     'whitepoint', XYZwhite);
 
 dE = deltaE00(lab_meas', lab_est');
+
 
 msize=15;
 figure;
@@ -165,9 +167,8 @@ for i = 2:size(lab_est, 1)
     ylabel('b*','FontSize',15)
 end
 axis equal
-axis([min([lab_est(:, 2); lab_meas(:, 2)]) ...
-    max([lab_est(:, 2);lab_meas(:, 2)])...
-    min([lab_est(:, 3); lab_meas(:, 3)]) ...
+axis([min([lab_est(:, 2); lab_meas(:, 2)]) max([lab_est(:, 2);...
+    lab_meas(:, 2)]) min([lab_est(:, 3); lab_meas(:, 3)]) ...
     max([lab_meas(:, 3);lab_est(:, 3)])])
 
 subplot 132;
@@ -198,6 +199,8 @@ axis([min([lab_est(:, 3); lab_meas(:, 3)]) max([lab_est(:, 3);...
     lab_meas(:, 3)]) min([lab_est(:, 1); lab_meas(:, 1)]) ...
     max([lab_meas(:, 1);lab_est(:, 1)])])
 
+
+
 %% Save characterization values and deltae errors
 if ~isempty(save_filename)
     save(save_filename, 'monXYZ', 'radiometric', ...
@@ -207,5 +210,4 @@ end
 %% Display errors and estimated parameters
 disp 'deltaE00 -> mean, median, std, min and max'
 disp(num2str([mean(dE) median(dE) std(dE) min(dE) max(dE)]))
-
 
