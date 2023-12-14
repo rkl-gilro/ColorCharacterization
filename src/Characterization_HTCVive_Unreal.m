@@ -71,6 +71,43 @@ for i=1:size(primaries, 1)
     set(gcf,'renderer','Painters');
 end
 
+
+figure
+plot(380:780,primaries(1, end).radiance.value ./ ...
+    max(primaries(1, end).radiance.value), [cols{1}, '-.'],...
+    'LineWidth',2); hold on
+plot(380:780,primaries(2, end).radiance.value ./ ...
+    max(primaries(2, end).radiance.value), [cols{2}, '-'],...
+    'LineWidth',2); hold on
+plot(380:780,primaries(3, end).radiance.value ./ ...
+    max(primaries(3, end).radiance.value), [cols{3}, '--'],...
+    'LineWidth',2); hold on
+set(gca,  'FontSize', 15, 'fontname','Times New Roman');
+set(gcf,'renderer','Painters');
+legend('Red primary','Green primary','Blue primary', ...
+    'Interpreter','latex','Location','northeast','FontSize',12);
+legend('boxoff')
+xlabel('Wavelength (nm)', 'Interpreter','latex');
+ylabel('Normalized power', 'Interpreter','latex');
+axis([380 780 0 1])
+xticks([400 500 600 700])
+
+for i=1:size(Xs, 1)
+    additiviy_diff(i,1)= ((Xs(i, 4) - ...
+        (Xs(i, 1) + Xs(i, 2) + Xs(i, 3))')./(Xs(i, 4)'));
+    additiviy_diff(i,2)= ((Ys(i, 4) - ...
+        (Ys(i, 1) + Ys(i, 2) + Ys(i, 3))')./(Ys(i, 4)'));
+    additiviy_diff(i,3)= ((Zs(i, 4) - ...
+        (Zs(i, 1) + Zs(i, 2) + Zs(i, 3))')./(Zs(i, 4)'));
+end
+disp('Additivity: ')
+disp(num2str(sum(abs(additiviy_diff(~any( isnan( additiviy_diff ) | ...
+    isinf( additiviy_diff ), 2 ), :)))))
+
+additiviy_difff= 100*((Xs(end, 4) - ...
+    (Xs(end, 1) + Xs(end, 2) + Xs(end, 3)))/Xs(end, 4));
+disp(['Additiviy (only white)', num2str(additiviy_difff)])
+
 %% Estimated gamma curves for each channel
 for ch=1:3
     monXYZ(ch,:) = [Xs(end, ch) Ys(end, ch) Zs(end, ch)];
@@ -96,8 +133,6 @@ for ch = 1:3
     
 end
 
-XYZNoCalibration = RGBStest * monXYZ;
-XYZNoCalibrationwhite = [1 1 1] * monXYZ;
 XYZ = RGBStestLinear * monXYZ;
 xyY = XYZToxyY(XYZ');
 XYZwhite = RGBSwhite * monXYZ;
@@ -109,7 +144,6 @@ end
 xyYmeas = XYZToxyY(XYZmeas')';
 
 %% Plot the results
-%% NOTE for
 figure;plotChromaticity();hold on
 plot(xyY(1, :),xyY(2, :),'bo','MarkerSize',10,'LineWidth',2);
 plot(xyYmeas(:,1),xyYmeas(:,2),'kx','markersize',12,'linewidth',2)
@@ -122,11 +156,8 @@ ylabel('y','FontSize',15)
 %% Compute deltae2000
 lab_meas = xyz2lab(XYZmeas, 'whitepoint', white.color.XYZ');
 lab_est  = xyz2lab(XYZ,     'whitepoint', XYZwhite);
-labNoCalibration_est  = xyz2lab(XYZNoCalibration,...
-    'whitepoint', XYZNoCalibrationwhite); 
 
 dE = deltaE00(lab_meas', lab_est');
-dENoCalibration = deltaE00(lab_meas', labNoCalibration_est');
 
 
 figure;
@@ -196,7 +227,3 @@ end
 %% Display errors and estimated parameters
 disp 'deltaE00 -> mean, median, std, min and max'
 disp(num2str([mean(dE) median(dE) std(dE) min(dE) max(dE)]))
-
-disp 'deltaE00 no calibration -> mean, median, std, min and max'
-disp(num2str([mean(dENoCalibration) median(dENoCalibration) ...
-    std(dENoCalibration) min(dENoCalibration) max(dENoCalibration)]))

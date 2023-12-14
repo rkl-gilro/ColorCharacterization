@@ -139,8 +139,7 @@ for ch = 1:3
     RGBSwhite(:, ch) = interp1(x, radiometric(:, ch), 1);
 end
 
-XYZNoCalibration = RGBStest * monXYZ;
-XYZNoCalibrationwhite = [1 1 1] * monXYZ;
+
 XYZ = RGBStestLinear * monXYZ;
 XYZwhite = RGBSwhite * monXYZ;
 
@@ -162,11 +161,8 @@ set(gcf,'renderer','Painters');
 %% Compute deltae2000
 lab_meas = xyz2lab(XYZmeas, 'whitepoint', white.color.XYZ'); 
 lab_est  = xyz2lab(XYZ,     'whitepoint', XYZwhite); 
-labNoCalibration_est  = xyz2lab(XYZNoCalibration,...
-    'whitepoint', XYZNoCalibrationwhite); 
 
 dE = deltaE00(lab_meas', lab_est');
-dENoCalibration = deltaE00(lab_meas', labNoCalibration_est');
 
 msize=15;
 figure;
@@ -223,7 +219,4 @@ end
 disp 'deltaE00 -> mean, median, std, min and max'
 disp(num2str([mean(dE) median(dE) std(dE) min(dE) max(dE)]))
 
-disp 'deltaE00 no calibration -> mean, median, std, min and max'
-disp(num2str([mean(dENoCalibration) median(dENoCalibration) ...
-    std(dENoCalibration) min(dENoCalibration) max(dENoCalibration)]))
 
