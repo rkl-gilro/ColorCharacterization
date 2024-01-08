@@ -1,3 +1,4 @@
+clear
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Calibration new data setup Unreal
@@ -145,8 +146,11 @@ ylabel('y','FontSize',15)
 %% Compute deltae2000
 lab_meas = xyz2lab(XYZmeas, 'whitepoint', white.color.XYZ');
 lab_est  = xyz2lab(XYZ,     'whitepoint', XYZwhite);
+lab_nocalib  = rgb2lab(RGBStest, 'whitepoint', [1 1 1], ...
+    'ColorSpace','linear-rgb');
 
 dE = deltaE00(lab_meas', lab_est');
+dE_nocalib = deltaE00(lab_meas', lab_nocalib');
 
 
 figure;
@@ -210,9 +214,13 @@ axis([min([lab_est(:, 3); lab_meas(:, 3)]) max([lab_est(:, 3);...
 %% Save characterization values and deltae errors
 if ~isempty(save_filename)
     save(save_filename, 'monXYZ', 'radiometric', ...
-        'dE', 'lab_meas', 'lab_est');
+        'dE', 'lab_meas', 'lab_est', 'dE_nocalib');
 end
 
 %% Display errors and estimated parameters
 disp 'deltaE00 -> mean, median, std, min and max'
 disp(num2str([mean(dE) median(dE) std(dE) min(dE) max(dE)]))
+
+disp 'deltaE00 no calibration -> mean, median, std, min and max'
+disp(num2str([mean(dE_nocalib) median(dE_nocalib) ...
+    std(dE_nocalib) min(dE_nocalib) max(dE_nocalib)]))
