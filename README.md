@@ -1,4 +1,4 @@
-# ColorCalibration
+# Colorimetric Characterization
 
 
 <img src="https://github.com/rkl-gilro/ColorCalibration/blob/3968ed0ac658226b91b2d293e2692403d95aeaea/Colour%20Calibration.png" width="90%"></img> 
