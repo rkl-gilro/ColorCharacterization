@@ -8,6 +8,14 @@ _The use of Virtual Reality (VR) devices has become more prevalent in both recre
 
 ***
 Unity and Unreal projects: [Link to the Wiki page VRProjects](https://github.com/rkl-gilro/ColorCharacterization/wiki/VR-Projects)
+
+Centering HMD using Unreal Engine: Use this project to perform display centering before moving on to the characterization step. Verify that you can see the smallest concentric circle of the target through your measuring instrument (Konica Minolta CS-2000A spectroradiometer).
+
+Colorimetric Characterization using Unreal Engine: Utilize this project for chromatic characterization within the Unreal engine. Verify that upon project initiation, the color chip is prominently displayed across the entirety of the screen. This can be accomplished by accessing the VR view in SteamVR. Furthermore, customization options are available, allowing you to alter the material or shader to suit your specific needs.
+
+
+Colorimetric Characterization using Unity: Utilize this project for chromatic characterization within the Unity engine. Verify that upon project initiation, the color chip is prominently displayed across the entirety of the screen. This can be accomplished by accessing the VR view in SteamVR. Furthermore, customization options are available, allowing you to alter the material or shader to suit your specific needs.
+
 ***
 
 Please refer to:
