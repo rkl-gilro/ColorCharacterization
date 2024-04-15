@@ -6,10 +6,6 @@
 
 _The use of Virtual Reality (VR) devices has become more prevalent in both recreational and professional settings in recent years due to the increased quality and realism they offer. However, accurately representing color and luminance in VR systems requires proper color calibration that is suitable for the specific software and hardware being used. Unfortunately, there are currently no established best practices for this calibration. To address this issue, we conducted a study on the RGB intensities and reflected colors for each color channel of the HTC Vive Pro Eye VR headset. We analyzed the display spectra of this device using both Unity and Unreal 3D rendering software to measure their influence on the headset's chromatic behavior. These measurements were taken for unlit and standard shaders in both software platforms and were compared to measurements taken without rendering software to measure the display primaries' pure characteristics. Additionally, we assessed the headset's uniformity to determine the image quality over its display. Overall, we propose a methodology to carry out a color calibration customized to the type of material or graphics engine used, resulting in more accurate and realistic color representations in VR._
 
-<p align="center" width="100%">
-    <img width="80%" src="ValidationError.png">
-</p>
-
 ***
 **Unity and Unreal projects**: [Link to the Wiki page VRProjects](https://github.com/rkl-gilro/ColorCharacterization/wiki/VR-Projects)
 
