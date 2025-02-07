@@ -22,6 +22,9 @@ _The use of Virtual Reality (VR) devices has become more prevalent in both recre
 
 Please refer to:
 
+Francisco Díaz-Barrancas, Raquel Gil Rodríguez, Florian S. Bayer, Avi Aizenman, and Karl R. Gegenfurtner, "High-fidelity color characterization in virtual reality across head mounted displays, game engines, and materials," Opt. Express 32, 22388-22409 (2024).
+[DOI](https://doi.org/10.1364/OE.520168)
+
 Francisco Díaz Barrancas, Raquel Gil Rodríguez, Avi Aizenman, Florian S. Bayer, Karl R. Gegenfurtner; "Color calibration in virtual reality for Unity and Unreal," 2023 IEEE Conference on Virtual Reality and 3D User Interfaces Abstracts and Workshops (VRW), Shanghai, China, 2023, pp. 733-734.
 [DOI](https://ieeexplore.ieee.org/document/10108790)
 
