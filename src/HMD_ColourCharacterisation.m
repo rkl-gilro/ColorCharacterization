@@ -152,8 +152,8 @@ set(gcf,'renderer','Painters');
 legend('Red primary','Green primary','Blue primary', ...
     'Interpreter','latex','Location','northeast','FontSize',12);
 legend('boxoff')
-xlabel('Wavelength (nm)', 'Interpreter','latex');
-ylabel('Power (Watt/m^2 sr nm)', 'Interpreter','latex');
+xlabel('Wavelength (nm)');
+ylabel('Power (Watt / m^2 sr nm)');
 axis([380 780 0 Inf])
 xticks([400 500 600 700])
 
